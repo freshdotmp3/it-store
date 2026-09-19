@@ -67,15 +67,17 @@
 
                   <div class="col-md-4">
                     <label class="form-label">ราคารวมของสินค้า (บาท)</label>
-                    <input type="number" name="price" class="form-control" min="1" step="0.5" placeholder="0" required>
+                    <input type="number" id="cashPrice" name="price" class="form-control" min="1" step="0.5" placeholder="0" required oninput="kitmoneyChikChing()">
                   </div>
+
                   <div class="col-md-4">
                     <label class="form-label">ยอดจำนวนเงินที่จ่าย (บาท)</label>
-                    <input type="number" name="paid_amount" class="form-control" min="1" step="0.5" placeholder="0" required>
+                    <input type="number" id="cashPaid" name="paid_amount" class="form-control" min="1" step="0.5" placeholder="0" required oninput="kitmoneyChikChing()">
                   </div>
+
                   <div class="col-md-4">
                     <label class="form-label">เงินทอนที่หยิบออกจากกล่อง (บาท)</label>
-                    <input type="number" name="change_amount" class="form-control" min="0" step="0.5" placeholder="0" required>
+                    <input type="number" id="cashChange" name="change_amount" class="form-control bg-warning-subtle text-danger border-warning fw-bold" value="0" readonly>
                   </div>
 
                   <div class="col-12 text-end mt-4">
@@ -160,7 +162,7 @@
                 <div class="text-muted small mb-1">
                   <i class="bi bi-box-arrow-in-down text-success me-1"></i> เงินสดที่ใส่เข้ากล่อง
                 </div>
-                <h4 class="fw-bold text-success mb-0">150 บาท</h4>
+                <h4 class="fw-bold text-success mb-0" id="statCashIn">150 บาท</h4>
               </div>
             </div>
 
@@ -169,7 +171,7 @@
                 <div class="text-muted small mb-1">
                   <i class="bi bi-box-arrow-up text-danger me-1"></i> เงินทอนที่หยิบออกไป
                 </div>
-                <h4 class="fw-bold text-danger mb-0">95 บาท</h4>
+                <h4 class="fw-bold text-danger mb-0" id="statCashOut">95 บาท</h4>
               </div>
             </div>
 
@@ -178,7 +180,7 @@
                 <div class="text-muted small mb-1">
                   <i class="bi bi-phone text-primary me-1"></i> ยอดโอนเข้าบัญชี
                 </div>
-                <h4 class="fw-bold text-primary mb-0">45 บาท</h4>
+                <h4 class="fw-bold text-primary mb-0" id="statQrTotal">45 บาท</h4>
               </div>
             </div>
 
@@ -187,7 +189,7 @@
                 <div class="text-white-50 small mb-1">
                   <i class="bi bi-cash-stack text-warning me-1"></i> ยอดรวมรายรับทั้งหมด
                 </div>
-                <h4 class="fw-bold text-warning mb-0">100 บาท</h4>
+                <h4 class="fw-bold text-warning mb-0" id="statGrandTotal">100 บาท</h4>
               </div>
             </div>
 
@@ -200,7 +202,13 @@
           <h5 class="card-title mb-0">
             <i class="bi bi-table me-2"></i>ตารางบันทึกรายรับของร้านค้า
           </h5>
-          <span class="badge bg-secondary fs-6">4 รายการ</span>
+          
+          <div class="d-flex align-items-center gap-2">
+            <span class="badge bg-secondary fs-6" id="totalCountBadge">4 รายการ</span>
+            <button type="button" class="btn btn-outline-danger btn-sm" onclick="removealldata()">
+              <i class="bi bi-trash3 me-1"></i> ล้างข้อมูลทั้งหมด
+            </button>
+          </div>
         </div>
         <div class="card-body p-0">
           <div class="table-responsive">
@@ -217,7 +225,7 @@
                   <th class="text-center">วิธีชำระ</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="transactionTableBody">
                 <tr>
                   <td><small class="text-muted">08/09/2026 09:10</small></td>
                   <td class="fw-semibold">แกรม ปวช. 2/1</td>
@@ -275,6 +283,41 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+      function kitmoneyChikChing() {
+        let price = Number(document.getElementById("cashPrice").value);
+        let paid = Number(document.getElementById("cashPaid").value);
+        let change = paid - price;
+
+        if (change > 0) {
+          document.getElementById("cashChange").value = change;
+        } else {
+          document.getElementById("cashChange").value = 0;
+        }
+      }
+
+      function removealldata() {
+        let confirmDelete = confirm("คุณต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?");
+
+        if (confirmDelete) {
+          document.getElementById("transactionTableBody").innerHTML = `
+            <tr>
+              <td colspan="8" class="text-center text-muted py-4">
+                <i class="bi bi-inbox fs-4 d-block mb-1"></i> ไม่มีข้อมูลรายการซื้อขาย
+              </td>
+            </tr>
+          `;
+
+          document.getElementById("totalCountBadge").innerText = "0 รายการ";
+
+          document.getElementById("statCashIn").innerText = "0 บาท";
+          document.getElementById("statCashOut").innerText = "0 บาท";
+          document.getElementById("statQrTotal").innerText = "0 บาท";
+          document.getElementById("statGrandTotal").innerText = "0 บาท";
+        }
+      }
+    </script>
 
   </body>
 </html>
