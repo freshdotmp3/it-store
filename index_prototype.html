@@ -132,7 +132,7 @@
                       </div>
                       
                       <img src="elements/images/qrcode/pay.png" 
-                          alt="Thai QR Payment - ศรายุทธ โพธิ์ทรง" 
+                          alt="Thai QR Payment" 
                           class="img-fluid border shadow-sm bg-white rounded" 
                           style="max-width: 300px; width: 100%; height: auto;">
 
@@ -297,26 +297,6 @@
         }
       }
 
-      function removealldata() {
-        let confirmDelete = confirm("คุณต้องการล้างข้อมูลทั้งหมดใช่หรือไม่?");
-
-        if (confirmDelete) {
-          document.getElementById("transactionTableBody").innerHTML = `
-            <tr>
-              <td colspan="8" class="text-center text-muted py-4">
-                <i class="bi bi-inbox fs-4 d-block mb-1"></i> ไม่มีข้อมูลรายการซื้อขาย
-              </td>
-            </tr>
-          `;
-
-          document.getElementById("totalCountBadge").innerText = "0 รายการ";
-
-          document.getElementById("statCashIn").innerText = "0 บาท";
-          document.getElementById("statCashOut").innerText = "0 บาท";
-          document.getElementById("statQrTotal").innerText = "0 บาท";
-          document.getElementById("statGrandTotal").innerText = "0 บาท";
-        }
-      }
     </script>
 
   </body>
